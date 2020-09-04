@@ -1,14 +1,12 @@
-import React, {Fragment, useContext, useState, useEffect} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import './Signup.css'
 import { Link } from "react-router-dom";
-// import {ActionContext} from "./../../Context/GlobalState";
 import {signUp} from "./../../Helper/auth";
 import Alert from "../Alert/Alert.component";
 import Loading from "../Loading/Loading.component";
 
 const Signup = () => {
 
-    // const {dispatch} = useContext(ActionContext);
     const [credential, setCred] = useState({
         email : "",
         password : "",
