@@ -30,11 +30,8 @@ jobs:
       - name: Install Packages
         run: npm install
 
-      - name: google map install
-        run: npm install google-maps-react
-
       - name: create build
-        run: CI=false REACT_APP_API_KEY=${{secrets.API_KEY}} REACT_APP_authDomain={{secrets.authDomain}} REACT_APP_databaseURL={{secrets.databaseURL}} REACT_APP_projectId={{secrets.projectId}} REACT_APP_storageBucket={{secrets.storageBucket}} REACT_APP_messagingSenderId={{secrets.messagingSenderId}} REACT_APP_appId={{secrets.appId}} npm run build
+        run: CI=false REACT_APP_API_KEY=${{secrets.API_KEY}} REACT_APP_authDomain=${{secrets.authDomain}} REACT_APP_databaseURL=${{secrets.databaseURL}} REACT_APP_projectId=${{secrets.projectId}} REACT_APP_storageBucket=${{secrets.storageBucket}} REACT_APP_messagingSenderId=${{secrets.messagingSenderId}} REACT_APP_appId=${{secrets.appId}} npm run build
 
       - name: Installing Surge
         run: npm install -g surge
