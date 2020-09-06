@@ -4,6 +4,8 @@ import icon from "./../../images/user.jpeg";
 import { db } from '../../services/firebase';
 import {ActionContext} from "./../../Context/GlobalState";
 import moment from 'moment';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import ImageIcon from '@material-ui/icons/Image';
 
 const ChannelItem = ({id, name}) => {
 
@@ -57,7 +59,17 @@ const ChannelItem = ({id, name}) => {
                         <div className="lastTime">{messages[0]?.data.timestamp && moment(new Date(messages[0]?.data.timestamp?.toDate()).toUTCString()).local().format('hh:mm a')}</div>
                     </div>
                     <div className="last_message_block">
-                        <div className="last_message">{messages[0]?.data.body}</div>
+                        {
+                            messages[0]?.data.type === "media"
+                            ?
+                                messages[0].data.contentType === "video/mp4"
+                                ?
+                                <div className="last_message"> <VideocamIcon/> Video</div>
+                                :
+                                <div className="last_message"> <ImageIcon/> Photo</div>
+                            :
+                            <div className="last_message">{messages[0]?.data.body}</div>
+                        }
                     </div>
                 </div>
             </div>
