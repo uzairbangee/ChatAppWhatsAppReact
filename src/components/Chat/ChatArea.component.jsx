@@ -9,6 +9,10 @@ import AttachFileSharpIcon from '@material-ui/icons/AttachFileSharp';
 import SendIcon from '@material-ui/icons/Send';
 import ClearSharpIcon from '@material-ui/icons/ClearSharp';
 import Loading from "./../Loading/Loading.component";
+import DateBox from './DateBox';
+import Preview from './Preview';
+import MessageMedia from './MessageMedia';
+import Message from './Message';
 
 const ChatArea = () => {
 
@@ -181,51 +185,7 @@ const ChatArea = () => {
 
                 {
                     file?.type &&
-                    <div className="preview_box_block">
-                        <div className="preview__inner">
-                            <div className="preview__back">
-                                <header className="preview__header">
-                                    <div className="preview__header_block">
-                                        <button className="preview__cancel_button" onClick={cancelPreview}>
-                                            <ClearSharpIcon/>
-                                        </button>
-                                        <div className="preview__heading">
-                                            Preview
-                                        </div>
-                                    </div>
-                                </header>
-                                <div className="preview__body">
-                                    <div className="first__portion">
-
-                                        <div className="preview_first__block">
-                                            <div className="preview__image_area__block">
-                                                <div className="preview__image_area">
-                                                    {
-                                                        file?.type === "video/mp4"
-                                                        ?
-                                                            previewImage
-                                                            ?
-                                                                <video className="preview__image" controls>
-                                                                    <source src={previewImage} type="video/mp4" />
-                                                                    Your browser does not support the video tag.
-                                                                </video>
-                                                            :
-                                                            <Loading type="spinner-border text-success"/>
-                                                        :
-                                                            previewImage
-                                                            ?
-                                                                <img src={previewImage} alt="" className="preview__image"/>
-                                                            :
-                                                            <Loading type="spinner-border text-success"/>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Preview file={file} previewImage={previewImage} cancelPreview={cancelPreview}/>
                 }
 
                 <div className="chat__area__start">
@@ -240,62 +200,19 @@ const ChatArea = () => {
                                             {
                                                 index !== 0 && moment(new Date(messages[index].data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY') !== moment(new Date(messages[index - 1].data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY')
                                                 &&
-                                                <div className="date__area">
-                                                    <div className="date__box">
-                                                        <span className="date"> {moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY')} </span>
-                                                    </div>
-                                                </div>
+                                                <DateBox time={moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY')}/>
                                             }
                                             {
                                                 index === 0
                                                 &&
-                                                <div className="date__area">
-                                                    <div className="date__box">
-                                                        <span className="date"> {moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY')} </span>
-                                                    </div>
-                                                </div>
+                                                <DateBox time={moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('DD/MM/YY')}/>
                                             }
                                         {
                                             message.data.type === "media"
                                             ?
-                                                message.data.contentType === "video/mp4"
-                                                ?
-                                                    <div className={message.data.author === user.email ? "image_box_block_send" : "image_box_block_recieve"}>
-                                                        <div className={message.data.author === user.email ? "image_box_send" : "image_box_recieve"}>
-                                                                <video className={message.data.author === user.email ? "image_send" : "image_recieve"} controls>
-                                                                    <source src={message.data.mediaURL} type="video/mp4" />
-                                                                    Your browser does not support the video tag.
-                                                                </video>
-                                                            <div className={message.data.author === user.email ? "caption_sent" : "caption_recieve"}>
-                                                            {message.data?.caption && message.data.caption}
-                                                                <div className={message.data.author === user.email ? "message_sent_time"  : "message_recieve_time"}>
-                                                                {message.data.timestamp && moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('hh:mm a')}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                :
-                                                    <div className={message.data.author === user.email ? "image_box_block_send" : "image_box_block_recieve"}>
-                                                        <div className={message.data.author === user.email ? "image_box_send" : "image_box_recieve"}>
-                                                            <img src={message.data.mediaURL} className={message.data.author === user.email ? "image_send" : "image_recieve"}/>
-                                                            <div className={message.data.author === user.email ? "caption_sent" : "caption_recieve"}>
-                                                            {message.data?.caption && message.data.caption}
-                                                                <div className={message.data.author === user.email ? "message_sent_time"  : "message_recieve_time"}>
-                                                                {message.data.timestamp && moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('hh:mm a')}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <MessageMedia message={message}/>
                                             :
-                                                <div className={message.data.author === user.email ? "message__sent_box"  : "message__recieve_box"} >
-                                                    <span></span>
-                                                    <div className={message.data.author === user.email ? "message__sent"  : "message__recieve"}>
-                                                        {message.data.body}
-                                                        <div className={message.data.author === user.email ? "message_sent_time"  : "message_recieve_time"}>
-                                                            {message.data.timestamp && moment(new Date(message.data.timestamp?.toDate()).toUTCString()).local().format('hh:mm a')}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <Message message={message}/>
                                         }
                                     </span>
                                 ))

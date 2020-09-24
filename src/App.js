@@ -15,10 +15,11 @@ const App = () => {
 
   useEffect(() => {
     setLoading(true);
+    let unsubscribe = false;
     const checkUser = async () => {
       await auth().onAuthStateChanged((user) => {
 
-        if (user) {
+        if (!unsubscribe && user) {
           const newname = user.email.split('@');
 
           db.collection("users").onSnapshot(async (snapshot) => {
@@ -48,8 +49,12 @@ const App = () => {
         }
       })
     }
-
+    
     checkUser();
+    
+    return () => {
+      unsubscribe = true;
+    }
 
   }, [])
 
